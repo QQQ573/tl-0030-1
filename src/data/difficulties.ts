@@ -1,0 +1,47 @@
+import type { DifficultyConfig } from '@/types/game';
+
+export const DIFFICULTY_CONFIGS: Record<string, DifficultyConfig> = {
+  easy: {
+    id: 'easy',
+    name: '初级·初涉迁徙',
+    description: '12×9小地图，停歇点充足，适合初次体验的小朋友。',
+    gridWidth: 12,
+    gridHeight: 9,
+    baseRestStops: 6,
+    maxTurns: 30,
+    cityDensity: 0.06,
+    mountainDensity: 0.10,
+    wetlandDensity: 0.14,
+    flockConfigs: ['grus_nigricollis_common'],
+  },
+  medium: {
+    id: 'medium',
+    name: '中级·双鹤齐飞',
+    description: '14×10地图，两支队伍同时迁徙，需要协调路径。',
+    gridWidth: 14,
+    gridHeight: 10,
+    baseRestStops: 5,
+    maxTurns: 36,
+    cityDensity: 0.09,
+    mountainDensity: 0.12,
+    wetlandDensity: 0.11,
+    flockConfigs: ['grus_nigricollis_common', 'grus_nigricollis_secondary'],
+  },
+  hard: {
+    id: 'hard',
+    name: '高级·三鹤征途',
+    description: '16×12标准地图，三支队伍（含濒危亚种），减员限制严格。',
+    gridWidth: 16,
+    gridHeight: 12,
+    baseRestStops: 5,
+    maxTurns: 42,
+    cityDensity: 0.11,
+    mountainDensity: 0.14,
+    wetlandDensity: 0.09,
+    flockConfigs: [
+      'grus_nigricollis_common',
+      'grus_nigricollis_secondary',
+      'grus_nigricollis_endangered',
+    ],
+  },
+};
