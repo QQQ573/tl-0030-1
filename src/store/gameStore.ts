@@ -165,7 +165,6 @@ export const useGameStore = create<GameStoreState>((set, get) => ({
       restStops: newRestStops,
       flocks: newFlocks,
       restStopsRemaining: state.restStopsRemaining - 1,
-      placingRestStop: false,
     });
     return true;
   },

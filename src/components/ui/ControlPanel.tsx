@@ -1,7 +1,7 @@
 import { memo, useState } from 'react';
 import { useGameStore } from '@/store/gameStore';
 import { useUiStore } from '@/store/uiStore';
-import { Home, Play, SkipForward, RotateCcw, Trash2, Tent, BookOpen, ScrollText } from 'lucide-react';
+import { Home, Play, SkipForward, RotateCcw, Trash2, Tent, BookOpen, ScrollText, Info } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 export const ControlPanel = memo(function ControlPanel() {
@@ -11,7 +11,6 @@ export const ControlPanel = memo(function ControlPanel() {
     restStopsRemaining,
     placingRestStop,
     togglePlacingRestStop,
-    setPlacingRestStop,
     clearAllRestStops,
     executeTurn,
     executeAuto,
@@ -53,9 +52,9 @@ export const ControlPanel = memo(function ControlPanel() {
             </div>
             <div>
               <div className="font-bold text-sm" style={{ color: '#1B4332' }}>
-                停歇点
+                停歇点 🏕️
               </div>
-              <div className="text-xs text-gray-500">放置后降低路径代价</div>
+              <div className="text-xs text-gray-500">引导鹤群选择更优路径</div>
             </div>
           </div>
           <div
@@ -70,20 +69,40 @@ export const ControlPanel = memo(function ControlPanel() {
           </div>
         </div>
 
+        <div
+          className="mb-3 p-3 rounded-xl text-xs leading-relaxed flex items-start gap-2"
+          style={{
+            backgroundColor: 'rgba(33, 158, 188, 0.08)',
+            border: '1px solid rgba(33, 158, 188, 0.2)',
+            color: '#005F73',
+          }}
+        >
+          <Info size={14} className="mt-0.5 flex-shrink-0" />
+          <div>
+            <strong>操作说明：</strong>
+            直接点击地图上的草地🌿即可放置停歇点；
+            再次点击已有停歇点可撤销。
+            停歇点会降低寻路代价，让鹤群绕开城市。
+          </div>
+        </div>
+
         <div className="space-y-2">
           <button
-            onClick={() => (placingRestStop ? setPlacingRestStop(false) : togglePlacingRestStop())}
+            onClick={togglePlacingRestStop}
             disabled={!isPlanning || restStopsRemaining <= 0}
             className={`${buttonBase}`}
             style={{
-              backgroundColor: placingRestStop ? '#FF8800' : 'rgba(255, 136, 0, 0.12)',
+              backgroundColor: placingRestStop
+                ? 'linear-gradient(135deg, #FF8800, #FFB703)'
+                : 'rgba(255, 136, 0, 0.12)',
               color: placingRestStop ? '#FFFFFF' : '#FF8800',
               opacity: !isPlanning || restStopsRemaining <= 0 ? 0.45 : 1,
               cursor: !isPlanning || restStopsRemaining <= 0 ? 'not-allowed' : 'pointer',
               border: placingRestStop ? 'none' : '2px solid rgba(255, 136, 0, 0.3)',
+              boxShadow: placingRestStop ? '0 4px 14px rgba(255,136,0,0.35)' : undefined,
             }}
           >
-            {placingRestStop ? '取消放置模式' : '🟡 放置停歇点'}
+            {placingRestStop ? '✓ 连续放置模式（点击任意草地放置）' : '🏕️ 开启连续放置模式'}
           </button>
 
           <button
@@ -107,8 +126,9 @@ export const ControlPanel = memo(function ControlPanel() {
         className="rounded-2xl p-4 shadow-md"
         style={{ backgroundColor: 'rgba(255,255,255,0.95)' }}
       >
-        <div className="text-sm font-bold mb-3" style={{ color: '#1B4332' }}>
-          🎮 行动控制
+        <div className="text-sm font-extrabold mb-3 flex items-center gap-2" style={{ color: '#1B4332' }}>
+          <span style={{ fontSize: 18 }}>🎮</span>
+          迁徙控制
         </div>
 
         <div className="space-y-2">
@@ -117,7 +137,9 @@ export const ControlPanel = memo(function ControlPanel() {
             disabled={!canExecute}
             className={`${buttonBase} text-white`}
             style={{
-              backgroundColor: canExecute ? '#2D6A4F' : '#95A5A6',
+              background: canExecute
+                ? 'linear-gradient(135deg, #2D6A4F 0%, #40916C 100%)'
+                : '#95A5A6',
               opacity: canExecute ? 1 : 0.6,
               cursor: canExecute ? 'pointer' : 'not-allowed',
               boxShadow: canExecute ? '0 4px 14px rgba(45, 106, 79, 0.3)' : undefined,
@@ -140,7 +162,7 @@ export const ControlPanel = memo(function ControlPanel() {
             }}
           >
             <SkipForward size={16} />
-            自动迁徙（加速）
+            ⏩ 自动迁徙（快速）
           </button>
 
           <button
@@ -153,7 +175,7 @@ export const ControlPanel = memo(function ControlPanel() {
             }}
           >
             <RotateCcw size={16} />
-            重置关卡（同种子）
+            🔄 重置关卡（同种子）
           </button>
         </div>
       </div>
@@ -187,7 +209,7 @@ export const ControlPanel = memo(function ControlPanel() {
             }}
           >
             <ScrollText size={16} />
-            {showEventLog ? '关闭' : '查看'}事件日志
+            {showEventLog ? '✓ 关闭' : '📜 查看'}事件日志
           </button>
 
           <button
@@ -199,7 +221,7 @@ export const ControlPanel = memo(function ControlPanel() {
             }}
           >
             <Home size={16} />
-            返回主菜单
+            🏠 返回主菜单
           </button>
         </div>
       </div>
